@@ -5,7 +5,7 @@ RUN go mod download
 RUN go build -o main .
 
 FROM alpine:latest
-RUN apk --no-cache add ca-certificates
+RUN apk --no-cache add curl
 WORKDIR /app
 COPY --from=build /app/main .
 EXPOSE 7654
