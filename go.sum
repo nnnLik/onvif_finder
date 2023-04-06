@@ -1,0 +1,6 @@
+github.com/clbanning/mxj v1.8.4 h1:HuhwZtbyvyOw+3Z1AowPkU87JkJUSv751ELWaiTpj8I=
+github.com/clbanning/mxj v1.8.4/go.mod h1:BVjHeAH+rl9rs6f+QIpeRl0tfu10SXn1pUSa5PVGJng=
+github.com/deepch/go-onvif v0.0.0-20180622022735-9742ea6affba h1:gDAwGTpMYq8sMX6GgzwCD97KZZtIhHSZziRiXzFteJo=
+github.com/deepch/go-onvif v0.0.0-20180622022735-9742ea6affba/go.mod h1:I2WtW+OQjV/9/wy2KbvyLWKvZhGBn+Mg/2LWxMW+h2k=
+github.com/satori/go.uuid v1.2.0 h1:0uYX9dsZ2yD7q2RtLRtPSdGDWzjeM3TbMJP9utgA0ww=
+github.com/satori/go.uuid v1.2.0/go.mod h1:dA0hQrYB0VpLJoorglMZABFdXlWrHn1NEOzdhQKdks0=
