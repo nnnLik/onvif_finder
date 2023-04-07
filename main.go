@@ -1,47 +1,52 @@
 package main
 
 import (
-	"encoding/json"
-	"fmt"
-	"github.com/deepch/go-onvif"
-	"net/http"
-	"strings"
-	"time"
+        "encoding/json"
+        "fmt"
+        "github.com/deepch/go-onvif"
+        "net/http"
+        "os"
+        "strings"
+        "time"
 )
 
-type Response struct {
-	Result []string `json:"result"`
+func fetchDevices() ([]string, error) {
+        devices, err := onvif.StartDiscovery(100*time.Millisecond)
+        if err != nil {
+                return nil, err
+        }
+
+        var ipAddresses []string
+        for _, device := range devices {
+                addr := strings.TrimPrefix(device.XAddr, "http://")
+                addr = strings.TrimSuffix(addr, "/device_service")
+                addr = strings.TrimSuffix(addr, "/onvif")
+                ipAddresses = append(ipAddresses, addr)
+        }
+
+        return ipAddresses, nil
 }
 
-func fetchDevices() ([]string, error) {
-	devices, err := onvif.StartDiscovery(100 * time.Millisecond)
-	if err != nil {
-		return nil, err
-	}
-
-	var ipAddresses []string
-	for _, device := range devices {
-		addr := strings.TrimPrefix(device.XAddr, "http://")
-		addr = strings.TrimSuffix(addr, "/device_service")
-		addr = strings.TrimSuffix(addr, "/onvif")
-		ipAddresses = append(ipAddresses, addr)
-	}
-
-	return ipAddresses, nil
+func getLastCameraIP(ipAddresses []string) []string {
+        serverIP := os.Getenv("IP")
+        if serverIP != "" {
+                ipAddresses = append(ipAddresses, serverIP)
+        }
+        return ipAddresses
 }
 
 func handleGetAllOnvifCameras(w http.ResponseWriter, r *http.Request) {
-	ipAddresses, err := fetchDevices()
-	if err != nil {
-		fmt.Println("Error: ", err)
-		return
-	}
+        ipAddresses, err := fetchDevices()
+        if err != nil {
+                fmt.Println("Error: ", err)
+                return
+        }
+        ipAddresses = getLastCameraIP(ipAddresses)
 
-	response := Response{Result: ipAddresses}
-	json.NewEncoder(w).Encode(response)
+        json.NewEncoder(w).Encode(ipAddresses)
 }
 
 func main() {
-	http.HandleFunc("/get_all_onvif_cameras/", handleGetAllOnvifCameras)
-	http.ListenAndServe(":7654", nil)
+        http.HandleFunc("/get_all_onvif_cameras/", handleGetAllOnvifCameras)
+        http.ListenAndServe(":7654", nil)
 }
