@@ -29,9 +29,13 @@ func fetchDevices() ([]string, error) {
 
 func getLastCameraIP(ipAddresses []string) []string {
         serverIP := os.Getenv("IP")
+        extraIP_1 := "10.20.100.40"
+        extraIP_2 := "10.20.100.41"
         if serverIP != "" {
                 ipAddresses = append(ipAddresses, serverIP)
         }
+        ipAddresses = append(ipAddresses, extraIP_1)
+        ipAddresses = append(ipAddresses, extraIP_2)
         return ipAddresses
 }
 
